@@ -21,9 +21,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "OrderDetail.bestSelling", 
 			query = "SELECT od.book FROM OrderDetail od GROUP by od.book.bookId "
-					+ "ORDER BY SUM(od.quantity) DESC"),
-	@NamedQuery(name = "OrderDetail.countByBook",
-				query = "SELECT COUNT(*) FROM OrderDetail od WHERE od.book.bookId =:bookId")
+					+ "ORDER BY SUM(od.quantity) DESC")
 	
 })
 public class OrderDetail implements java.io.Serializable {
@@ -50,6 +48,7 @@ public class OrderDetail implements java.io.Serializable {
 	}
 
 	@EmbeddedId
+
 	@AttributeOverrides({ @AttributeOverride(name = "orderId", column = @Column(name = "order_id", nullable = false)),
 			@AttributeOverride(name = "bookId", column = @Column(name = "book_id", nullable = false))})
 	public OrderDetailId getId() {

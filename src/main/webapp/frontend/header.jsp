@@ -13,7 +13,7 @@
 		<a href="register">Register</a>
 		<a href="view_cart">Cart</a>
 	</div>
-	
+	<div>&nbsp;</div>
 	<div>
 		<c:forEach var="category" items="${listCategory}" varStatus="status">
 			<a href="view_category?id=${category.categoryId}">

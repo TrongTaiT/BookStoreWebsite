@@ -1,12 +1,14 @@
 package com.bookstore.entity;
 // Generated May 22, 2018 5:46:15 AM by Hibernate Tools 5.2.10.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,9 +33,7 @@ import javax.persistence.Transient;
 	@NamedQuery(name = "Review.mostFavoredBooks",
 		query = "SELECT r.book, COUNT(r.book.bookId) AS ReviewCount, AVG(r.rating) as AvgRating FROM Review r "
 				+ "GROUP BY r.book.bookId HAVING AVG(r.rating) >= 4.0 "
-				+ "ORDER BY ReviewCount DESC, AvgRating DESC"),
-	@NamedQuery(name = "Review.countByCustomer",
-				query = "SELECT COUNT(r.reviewId) FROM Review r WHERE r.customer.customerId =:customerId")
+				+ "ORDER BY ReviewCount DESC, AvgRating DESC") 
 })
 public class Review implements java.io.Serializable {
 

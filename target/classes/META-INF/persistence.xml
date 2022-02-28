@@ -6,6 +6,14 @@
 	version="2.1">
 
 	<persistence-unit name="BookStoreWebsite">
+		<class>com.bookstore.entity.Book</class>
+		<class>com.bookstore.entity.BookOrder</class>
+		<class>com.bookstore.entity.Category</class>
+		<class>com.bookstore.entity.Customer</class>
+		<class>com.bookstore.entity.OrderDetail</class>
+		<class>com.bookstore.entity.OrderDetailId</class>
+		<class>com.bookstore.entity.Review</class>
+		<class>com.bookstore.entity.Users</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:mysql://localhost:3306/bookstoredb?autoReconnect=true" />

@@ -3,7 +3,6 @@ package com.bookstore.controller.admin;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +16,6 @@ public class AdminLoginFilter implements HttpFilter {
 
 	public AdminLoginFilter() {
 		super();
-	}
-
-	public void destroy() {
 	}
 
 	@Override
@@ -43,9 +39,6 @@ public class AdminLoginFilter implements HttpFilter {
 		} else {
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
-	}
-
-	public void init(FilterConfig fConfig) throws ServletException {
 	}
 
 }
