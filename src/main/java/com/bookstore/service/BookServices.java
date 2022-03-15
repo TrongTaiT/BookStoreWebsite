@@ -125,15 +125,15 @@ public class BookServices {
 	public void editBook() throws ServletException, IOException {
 		Integer bookId = Integer.parseInt(request.getParameter("id"));
 		Book book = bookDAO.get(bookId);
-		
+
 		String destinatePage = "book_form.jsp";
 		if (book != null) {
-			request.setAttribute("user", book);
+			request.setAttribute("book", book);
 
 			List<Category> listCategory = categoryDAO.listAll();
 			request.setAttribute("listCategory", listCategory);
 		} else {
-			String message = "Could not find user with ID " + bookId;
+			String message = "Could not find book with ID " + bookId;
 			request.setAttribute("message", message);
 			destinatePage = "message.jsp";
 		}
@@ -152,8 +152,8 @@ public class BookServices {
 		String title = request.getParameter("title");
 		Book bookByTitle = bookDAO.findByTitle(title);
 
-		if (!existBook.equals(bookByTitle)) {
-			String message = "Could not update book because there's another book having the same title";
+		if (bookByTitle != null && !existBook.equals(bookByTitle)) {
+			String message = "Could not update book because there's another book having same title.";
 			listBooks(message);
 			return;
 		}
@@ -169,13 +169,13 @@ public class BookServices {
 	public void deleteBook() throws ServletException, IOException {
 		Integer bookId = Integer.parseInt(request.getParameter("id"));
 		Book book = bookDAO.get(bookId);
-		
+
 		String message = null;
 		if (book != null) {
 			bookDAO.delete(bookId);
 			message = "The book has been deleted successfully.";
 		} else {
-			message = "Could not find book with ID "+ bookId + " or it might have been deleted";
+			message = "Could not find book with ID " + bookId + " or it might have been deleted";
 		}
 		listBooks(message);
 	}
@@ -183,11 +183,61 @@ public class BookServices {
 	public void listBooksBycategory() throws ServletException, IOException {
 		Integer categoryId = Integer.parseInt(request.getParameter("id"));
 		List<Book> listBooks = bookDAO.listByCategory(categoryId);
-		
+		Category category = categoryDAO.get(categoryId);
+
+		if (category == null) {
+			String message = "Sorry, the category ID " + categoryId + " is not available.";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("frontend/message.jsp").forward(request, response);
+
+			return;
+		}
+
+		List<Category> listCategory = categoryDAO.listAll();
+
+		request.setAttribute("listCategory", listCategory);
+		request.setAttribute("category", category);
 		request.setAttribute("listBooks", listBooks);
-		
+
 		String listPage = "frontend/books_list_by_category.jsp";
 		request.getRequestDispatcher(listPage).forward(request, response);
+	}
+
+	public void viewBookDetail() throws ServletException, IOException {
+		Integer bookId = Integer.parseInt(request.getParameter("id"));
+		Book book = bookDAO.get(bookId);
+
+		String destPage = "frontend/book_detail.jsp";
+
+		if (book != null) {
+			List<Category> listCategory = categoryDAO.listAll();
+
+			request.setAttribute("book", book);
+			request.setAttribute("listCategory", listCategory);
+		} else {
+			destPage = "frontend/message.jsp";
+			String message = "Sorry, the book with ID " + bookId + " is not available.";
+			request.setAttribute("message", message);
+		}
+
+		request.getRequestDispatcher(destPage).forward(request, response);
+	}
+
+	public void search() throws ServletException, IOException {
+		String keyword = request.getParameter("keyword");
+		List<Book> result = null;
+		
+		if (keyword.equals("")) {
+			result = bookDAO.listAll();
+		} else {
+			result = bookDAO.search(keyword);
+		}
+		
+		request.setAttribute("result", result);
+		request.setAttribute("keyword", keyword);
+		
+		String resultPage = "frontend/search_result.jsp";
+		request.getRequestDispatcher(resultPage).forward(request, response);
 	}
 
 }
