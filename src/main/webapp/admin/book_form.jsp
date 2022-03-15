@@ -55,6 +55,7 @@
 								<c:if test="${category.categoryId ne book.category.categoryId}">
 									<option value="${category.categoryId}">
 								</c:if>
+								
 									${category.name}
 								</option>
 							</c:forEach>
